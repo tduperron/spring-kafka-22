@@ -15,7 +15,7 @@ public class KafkaConsumer {
 
     private final  Logger log = getLogger(this.getClass());
 
-    @StreamListener(value = TOPIC_21)
+    @StreamListener(value = TOPIC_21, condition = "headers['messageClass']=='messageClass'")
     public void listenCategory(Message<Pony> message) {
         log.info("Headers: ");
         message.getHeaders().forEach((k,v)-> log.info("    " + k + ": " + v));

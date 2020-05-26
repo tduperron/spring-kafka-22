@@ -17,7 +17,7 @@ public class PublishController {
 
     @GetMapping("/pony")
     public ResponseEntity<Pony> pony() {
-        Pony pony = new Pony("Rainbow Dash");
+        Pony pony = new Pony("Rainbow Dash 2.1");
         final Message<Pony> message = MessageBuilder
                 .withPayload(pony)
                 .setHeader("messageClass", "messageClass")
