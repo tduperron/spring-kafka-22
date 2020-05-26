@@ -8,5 +8,9 @@
     <version>fakeversion</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>spring21</module>
+        <module>spring22</module>
+    </modules>
 </project>
 

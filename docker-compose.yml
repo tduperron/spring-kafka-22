@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    healthcheck:
+      test: echo ruok | nc localhost 2181
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    environment:
+      - ZOOKEEPER_SET_ACL=false
+    ports:
+      - "2181:2181"
+    command: /bin/sh -c "rm -rf data/* && start-zk.sh"
+
+  kafka:
+    image: wurstmeister/kafka:2.11-1.1.1
+    healthcheck:
+      test: kafka-topics.sh --zookeeper zookeeper:2181 --describe >/dev/null
+      interval: 30s
+      timeout: 5s
+      retries: 30
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - SOCKET_REQUEST_MAX_BYTES=20971520
+      - KAFKA_CREATE_TOPICS=provisioning:1:1,provisioningInput:1:1,provisioningOutput:1:1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
